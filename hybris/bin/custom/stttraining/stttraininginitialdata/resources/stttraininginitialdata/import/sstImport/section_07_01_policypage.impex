@@ -1,0 +1,155 @@
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+
+
+$contentCatalog=powertoolsContentCatalog
+$contentCatalogName=Powertools Content Catalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
+$productCatalog=powertoolsProductCatalog
+$productCatalogName=Powertools Product Catalog
+$productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$category=category(code, $productCV)
+$lang=en
+$siteResource=jar:de.hybris.stttraining.initialdata.constants.StttrainingInitialDataConstants&/stttraininginitialdata/import/sstImport
+
+
+
+#IMPEX FOR POLYCY 1
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+                                   ;;policyHeadingComponent;Policy heading information;policyHeadingComponent;;;;Policy One Page;
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];&imageRef;folder(qualifier)[default='images'];altText
+                   ;;sstPolicyImage;$siteResource/images/policy/policy.jpg;;policy.jpg;;
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+                                   ;;policyContent-1;Policy Content information 1 ;policyContent-1;;;;"Recent changes to the Canada Labour Code introduce new obligations for
+                                                                                                      federally regulated employers. One important new piece of legislation is Bill
+                                                                                                    C-65, which protects against harassment and violence in the workplace.
+                                                                                                    Bill C-65 introduced new Workplace Harassment and Violence Prevention
+                                                                                                    Regulations, which came into force on January 1st, 2021. Under this new
+                                                                                                    framework, employers are required to conduct a Workplace Harassment
+                                                                                                    and Violence Prevention Policy.";
+                                   ;;policyContent-2;Policy Content information 2 ;policyContent-2;;;;"Below you will find a sample Workplace Harassment and Violence Prevention Policy.
+                                                                                                    As each organization is unique, it is critical that you thoroughly review the template
+                                                                                                    and customize the sample policy with specific information relevant to your company.
+                                                                                                    Placeholders [sample] can be found where information specific to your company
+                                                                                                    should be inserted. Select compliance topics and associated best practices are
+                                                                                                    identified throughout the document, as applicable.";
+                                   ;;policyContent-3;Policy Content information 3;policyContent-3;;;;"Legal Statement: The information contained within does not constitute legal advice. Trucking HR Canada,
+                                                                                                        and all content contributors bear no responsibility for any circumstances arising out of or related to the
+                                                                                                        adoption or decision not to adopt any of the recommendations contained in the Workplace Policy Template
+                                                                                                        or any associated materials.";
+
+INSERT_UPDATE CustomPoliciesComponent; $contentCV[unique=true]; uid[unique=true]; policyHeading; policyImage(code); policyContents(&componentRef); &componentRef
+                                     ;                       ;policyOneComponent;Simpson Strong Tie Policy;sstPolicyImage;policyContent-1, policyContent-2, policyContent-3; policyOneComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef);
+                         ;;Section1PolicyOnePageSlot;;true;policyOneComponent
+
+INSERT_UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);label;defaultPage[default='true'];approvalStatus(code)[default='approved'];homepage[default='false']
+                         ;;policyOnePage;Policy One Page;LandingPage2Template;policy1
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='policyOnePage'];contentSlot(uid,$contentCV)[unique=true]
+                                ;;Section1-PolicyOnePage;Section1;;Section1PolicyOnePageSlot
+
+
+
+#IMPEX FOR POLYCY 2
+
+INSERT_UPDATE PageTemplate;$contentCV[unique=true];uid[unique=true];name;frontendTemplateName;restrictedPageTypes(code);active[default=true]
+                          ;;PolicyPageTemplate;Policy Page Template;policy/policyLayoutPage;ContentPage
+
+INSERT_UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);label;defaultPage[default='true'];approvalStatus(code)[default='approved'];homepage[default='false']
+                         ;;policySecondContentPage;Policy Second Content Page;PolicyPageTemplate;policy2
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='PolicyPageTemplate'];validComponentTypes(code);compTypeGroup(code)
+                             ;SiteLogo;;;logo
+                             ;HeaderLinks;;;headerlinks
+                             ;SearchBox;;;searchbox
+                             ;MiniCart;;;minicart
+                             ;NavigationBar;;;navigation
+                             ;Footer;;;footer
+                             ;TopHeaderSlot;;;wide
+                             ;PolicyHeader;;;wide
+                             ;Section1;;;wide
+                             ;Section2;;;wide
+                             ;Section3;;;wide
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];&imageRef;folder(qualifier)[default='images'];altText
+                   ;;sstPolicyImage2;$siteResource/images/policy/policy2.jpg;;policy2.jpg;;
+                   ;;sstPolicyImage3;$siteResource/images/policy/data-collected.png;image/png;data-collected.png;;
+                   ;;sstPolicyImage4;$siteResource/images/policy/data-sharing.jpg;;data-sharing.jpg;;`
+                   ;;sstPolicyImage5;$siteResource/images/policy/security.png;image/png;security.png;;
+
+INSERT_UPDATE CustomPoliciesComponent; $contentCV[unique=true]; uid[unique=true]; policyHeading; policyImage(code); &componentRef
+                                     ;                       ;policySecondComponent;Simpson Strong Tie Second Policy;sstPolicyImage2; policySecondComponent
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;;;;content;
+                                   ;;policyContentSection1-1;Policy Content Sectopm 1 information 1 ;policyContentSection1-1;;;;"We collect information you provide directly to us. For example, we collect information when you create an account, subscribe, participate in any interactive features of our services, fill out a form, request customer support or otherwise communicate with us. The types of information we may collect include your name, email address, postal address, credit card information and other contact or identifying information you choose to provide.";
+                                   ;;policyContentSection2-1;Policy Content Sectopm 2 information 1 ;policyContentSection2-1;;;;"We collect anonymous data from every visitor of the Website to monitor traffic and fix bugs. For example, we collect information like web requests, the data sent in response to such requests, the Internet Protocol address, the browser type, the browser language, and a timestamp for the request.";
+                                   ;;policyContentSection3-1;Policy Content Sectopm 3 information 1 ;policyContentSection3-1;;;;"We also use various technologies to collect information, and this may include sending cookies to your computer. Cookies are small data files stored on your hard drive or in your device memory that helps us to improve our services and your experience, see which areas and features of our services are popular and count visits. We may also collect information using web beacons (also known as ""tracking pixels""). Web beacons are electronic images that may be used in our services or emails and to track count visits or understand usage and campaign effectiveness.";
+                                   ;;policyContentSection1-2;Policy Content Sectopm 1 information 2 ;policyContentSection1-2;;;;"We don't share your personal information with third parties. Aggregated, anonymized data is periodically transmitted to external services to help us improve the Website and service.";
+                                   ;;policyContentSection2-2;Policy Content Sectopm 2 information 2 ;policyContentSection2-2;;;;"We may allow third parties to provide analytics services. These third parties may use cookies, web beacons and other technologies to collect information about your use of the services and other websites, including your IP address, web browser, pages viewed, time spent on pages, links clicked and conversion information.";
+                                   ;;policyContentSection3-2;Policy Content Sectopm 3 information 2 ;policyContentSection3-2;;;;"We also use social buttons provided by services like Twitter, Google+, LinkedIn and Facebook. Your use of these third party services is entirely optional. We are not responsible for the privacy policies and/or practices of these third party services, and you are responsible for reading and understanding those third party services' privacy policies.";
+                                   ;;policyContentSection1-3;Policy Content Sectopm 1 information 3 ;policyContentSection1-3;;;;"We take reasonable steps to protect personally identifiable information from loss, misuse, and unauthorized access, disclosure, alteration, or destruction. But, you should keep in mind that no Internet transmission is ever completely secure or error-free. In particular, email sent to or from the Sites may not be secure.";
+
+
+
+INSERT_UPDATE PolicySectionContentComponent; $contentCV[unique=true]; uid[unique=true]; policySectionHeading ; policyContentImage(code); policySectionBody(&componentRef); &componentRef
+                                           ;                       ;policySectionContentComponent1; Data Collected; sstPolicyImage3; policyContentSection1-1, policyContentSection2-1, policyContentSection3-1; policySectionContentComponent1
+                                           ;                       ;policySectionContentComponent2; Data Sharing; sstPolicyImage4; policyContentSection1-2, policyContentSection2-2, policyContentSection3-2; policySectionContentComponent2
+                                           ;                       ;policySectionContentComponent3; Security; sstPolicyImage5; policyContentSection1-3; policySectionContentComponent3
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(uid,$contentCV)
+                         ;;PolicyHeaderSlot;Policy Header Slot;true;policySecondComponent
+                         ;;Section1Slot;Section1 Second Policy Slot;true;policySectionContentComponent1
+                         ;;Section2Slot;Section2 Second Policy Slot;true;policySectionContentComponent2
+                         ;;Section3Slot;Section3 Second Policy Slot;true;policySectionContentComponent3
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV[unique=true];uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='PolicyPageTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+                                    ;;SiteLogo-Policy2Page;SiteLogo;;SiteLogoSlot;true
+                                    ;;HomepageLink-Policy2Page;HomepageNavLink;;HomepageNavLinkSlot;true
+                                    ;;NavigationBar-Policy2Page;NavigationBar;;NavigationBarSlot;true
+                                    ;;MiniCart-Policy2Page;MiniCart;;MiniCartSlot;true
+                                    ;;Footer-Policy2Page;Footer;;FooterSlot;true
+                                    ;;HeaderLinks-Policy2Page;HeaderLinks;;HeaderLinksSlot;true
+                                    ;;SearchBox-Policy2Page;SearchBox;;SearchBoxSlot;true
+                                    ;;TopHeaderSlot-Policy2Page;TopHeaderSlot;;TopHeaderSlot;true
+                                    ;;BottomHeaderSlot-Policy2Page;BottomHeaderSlot;;BottomHeaderSlot;true
+                                    ;;PlaceholderContentSlot-Policy2Page;PlaceholderContentSlot;;PlaceholderContentSlot;true
+                                    ;;PolicyHeaderSlot-Policy2Page;PolicyHeader;;PolicyHeaderSlot;true
+                                    ;;PolicySection1Slot-Policy2Page;Section1;;Section1Slot;true
+                                    ;;PolicySection2Slot-Policy2Page;Section2;;Section2Slot;true
+                                    ;;PolicySection3Slot-Policy2Page;Section3;;Section3Slot;true
+
+
+##---- level 4. children of Category Nav ----##
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+                               ;PolicyNavNode;;Policy Category;PowertoolsCategoryNavNode;;PolicyNavNode
+
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);&nodeRef;children(uid,$contentCV)[mode=append]
+                               ;PowertoolsCategoryNavNode;;Categories;PowertoolsNavNode;PowertoolsCategoryNavNode;PolicyNavNode
+
+
+INSERT_UPDATE CMSNavigationEntry;uid[unique=true];$contentCV[unique=true];name;navigationNode(&nodeRef);item(CMSLinkComponent.uid,CMSLinkComponent.$contentCV);
+                                ;PolicyNavNodeEntry;;Policy Navigation Node Entry;PolicyNavNode;PolicyCategoryLink;
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']; linkName
+                              ;;PolicyCategoryLink;Safety Category Link;/policy1;PolicyCategoryLink;PolicyCategoryLink; ;"Policy"
+
+
+####
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef
+                               ;PolicyOneCategoryNavNode;;Footwear Mens Category;PolicyNavNode;;PolicyOneCategoryNavNode
+                               ;PolicySecondCategoryNavNode;;Footwear Womens Category;PolicyNavNode;;PolicySecondCategoryNavNode
+
+INSERT_UPDATE CMSNavigationEntry;uid[unique=true];$contentCV[unique=true];name;navigationNode(&nodeRef);item(CMSLinkComponent.uid,CMSLinkComponent.$contentCV);
+                                ;PolicyOneCategoryNavNodeEntry;;Policy One Category Navigation Node Entry;PolicyOneCategoryNavNode;PolicyOneLink
+                                ;PolicySecondCategoryNavNodeEntry;;Policy Second Category Navigation Node Entry;PolicySecondCategoryNavNode;PolicySecondLink
+
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']; linkName;
+                              ;;PolicyOneLink;Visit Policy One Link;/policy1;PolicyOneLink;PolicyOneLink;; "Policy One"
+                              ;;PolicySecondLink;Visit Policy Second Link;/policy2;PolicySecondLink;PolicySecondLink;; "Policy Second"
+
+
